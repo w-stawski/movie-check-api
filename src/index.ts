@@ -19,6 +19,13 @@ app.use("/validate-*", (c, next) => {
 // Health Check
 app.get("/health", (c) => c.json({ status: "ok" }));
 
+app.get("/movies", (c) => {
+  return c.redirect(
+    "https://fic7x30v7swdye53.public.blob.vercel-storage.com/berlin-movies.json",
+    302,
+  );
+});
+
 const port = Number(process.env.PORT) || 3000;
 
 if (process.env.NODE_ENV !== "production") {
