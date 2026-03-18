@@ -2,7 +2,7 @@
   "name": "movie-meta-check-api",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch --inspect src/index.ts",
     "build": "tsc",
     "start": "tsx src/index.ts",
     "test": "vitest run"

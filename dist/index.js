@@ -4,7 +4,7 @@ import "dotenv/config";
 import { Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
 import { cors } from "hono/cors";
-import { BLOB_URL, getExtendedMovieData, getYorckMovies, } from "./get-movies.js";
+import { BLOB_URL, getExtendedMovieData as getExtendedMoviesData, getYorckMovies, } from "./get-movies.js";
 const app = new Hono();
 const allowedKeys = (process.env.ALLOWED_KEYS || "").split(",");
 app.use("*", cors());
@@ -17,7 +17,7 @@ app.get("/health", (c) => c.json({ status: "ok" }));
 app.get("/update-movies", async (c) => {
     try {
         const yorckMoviesData = await getYorckMovies();
-        const extendedMoviesData = await getExtendedMovieData(yorckMoviesData);
+        const extendedMoviesData = await getExtendedMoviesData(yorckMoviesData);
         const { url } = await put("berlin-movies.json", JSON.stringify(extendedMoviesData), {
             access: "public",
             addRandomSuffix: false,

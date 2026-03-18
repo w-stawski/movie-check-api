@@ -6,7 +6,7 @@ import { bearerAuth } from "hono/bearer-auth";
 import { cors } from "hono/cors";
 import {
   BLOB_URL,
-  getExtendedMovieData,
+  getExtendedMoviesData,
   getYorckMovies,
 } from "./get-movies.js";
 
@@ -27,7 +27,7 @@ app.get("/health", (c) => c.json({ status: "ok" }));
 app.get("/update-movies", async (c) => {
   try {
     const yorckMoviesData = await getYorckMovies();
-    const extendedMoviesData = await getExtendedMovieData(yorckMoviesData);
+    const extendedMoviesData = await getExtendedMoviesData(yorckMoviesData);
 
     const { url } = await put(
       "berlin-movies.json",
@@ -49,7 +49,7 @@ app.get("/movies", (c) => {
   return c.redirect(BLOB_URL, 302);
 });
 
-const port = Number(process.env.PORT) || 3350;
+const port = Number(process.env.PORT) || 3330;
 
 if (process.env.NODE_ENV !== "production") {
   serve({ fetch: app.fetch, port }, (info) => {

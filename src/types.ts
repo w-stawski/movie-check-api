@@ -40,9 +40,10 @@ export interface YorckRawFilmData {
 }
 
 export interface ProcessedMovie {
-  id: string;
   title: string;
   link: string | null;
+  image: string | null;
+  year: string | null;
   sessions: {
     id: string;
     startTime: string;

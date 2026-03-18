@@ -1,8 +1,8 @@
 import type {
-  ExtendedMovieData,
-  ProcessedMovie as ProcessedYorckMovie,
   YorckRawFilmData,
   YorckSession,
+  ProcessedMovie,
+  ExtendedMovieData,
 } from "./types.js";
 
 export const BLOB_URL =
@@ -53,26 +53,33 @@ const processSession = (session: YorckSession) => ({
   },
 });
 
-const parseYorckFilmData = (film: YorckRawFilmData): ProcessedYorckMovie => {
-  const { fields: f, sys } = film;
+function formatImageUrl(url?: string): string | null {
+  if (!url) return null;
+  return url.startsWith("//") ? `https:${url}` : url;
+}
 
+const parseYorckFilmData = (film: YorckRawFilmData): ProcessedMovie => {
+  const { fields } = film;
+  const { title, heroImage, slug, sessions, releaseDate } = fields;
+  const year = releaseDate?.split("-")[0] || null;
   return {
-    id: sys?.id,
-    title: f.title || "Untitled",
-    link: f.slug ? `${YORCK_BASE_URL}/en/films/${f.slug}` : null,
-    sessions: (f.sessions || []).map(processSession),
+    title: title,
+    image: formatImageUrl(heroImage?.fields?.image?.fields?.file?.url),
+    year,
+    link: slug ? `${YORCK_BASE_URL}/en/films/${slug}` : null,
+    sessions: (sessions || []).map(processSession),
   };
 };
 
-export const getYorckMovies = async (): Promise<ProcessedYorckMovie[]> => {
+export const getYorckMovies = async (): Promise<ProcessedMovie[]> => {
   const buildId = await fetchBuildId();
   const rawFilms = await fetchFilmsData(buildId);
 
   return rawFilms.map(parseYorckFilmData);
 };
 
-export const getExtendedMovieData = async (
-  yorckMoviesData: ProcessedYorckMovie[],
+export const getExtendedMoviesData = async (
+  yorckMoviesData: ProcessedMovie[],
 ): Promise<ExtendedMovieData[]> => {
   return await Promise.all(
     yorckMoviesData.map(async (movie: any) => {
@@ -81,7 +88,7 @@ export const getExtendedMovieData = async (
           /%20/g,
           "+",
         );
-        const omdbUrl = `https://www.omdbapi.com/?t=${searchTitle}&apikey=${process.env.OMDB_API_KEY}`;
+        const omdbUrl = `https://www.omdbapi.com/?t=${searchTitle}&y=${movie.year}&apikey=${process.env.OMDB_API_KEY}`;
 
         const response = await fetch(omdbUrl);
         const data = await response.json();
