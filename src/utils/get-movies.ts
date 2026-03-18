@@ -1,6 +1,7 @@
 import type { ProcessedMovie, YorckFilm, YorckSession } from './types.js';
 
 
+export const BLOB_URL ="https://fic7x30v7swdye53.public.blob.vercel-storage.com/berlin-movies.json"
 const YORCK_BASE_URL = "https://www.yorck.de";
 const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 

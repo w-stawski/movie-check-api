@@ -2,9 +2,9 @@ import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 
-import { bearerAuth } from "hono/bearer-auth";
-import { getYorckMovies } from './utils/get-movies.js';
 import { put } from '@vercel/blob';
+import { bearerAuth } from "hono/bearer-auth";
+import { BLOB_URL, getYorckMovies } from './utils/get-movies.js';
 
 
 const app = new Hono();
@@ -22,13 +22,14 @@ app.use("/validate-*", (c, next) => {
 app.get("/health", (c) => c.json({ status: "ok" }));
 
 app.get(
-  "/api/update-movies",
+  "/update-movies",
   async (c) => {
     try {
       const movies = await getYorckMovies();
       const { url } = await put("berlin-movies.json", JSON.stringify(movies), {
         access: "public",
         addRandomSuffix: false,
+        allowOverwrite: true
       });
       return c.json({ success: true, count: movies.length, url });
     } catch (error: any) {
@@ -39,7 +40,7 @@ app.get(
 
 app.get("/movies", (c) => {
   return c.redirect(
-    "https://fic7x30v7swdye53.public.blob.vercel-storage.com/berlin-movies.json",
+    BLOB_URL,
     302,
   );
 });
