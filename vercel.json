@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/update-movies",
+      "schedule": "*/5 * * * *"
+    }
+  ]
+}
