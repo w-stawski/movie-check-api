@@ -49,7 +49,7 @@ app.get("/movies", (c) => {
   return c.redirect(BLOB_URL, 302);
 });
 
-const port = Number(process.env.PORT) || 3300;
+const port = Number(process.env.PORT) || 3333;
 
 if (process.env.NODE_ENV !== "production") {
   serve({ fetch: app.fetch, port }, (info) => {
