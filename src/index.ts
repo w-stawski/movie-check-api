@@ -8,7 +8,7 @@ import {
   BLOB_URL,
   getExtendedMovieData,
   getYorckMovies,
-} from "./utils/get-movies.js";
+} from "./get-movies.js";
 
 const app = new Hono();
 
@@ -49,7 +49,7 @@ app.get("/movies", (c) => {
   return c.redirect(BLOB_URL, 302);
 });
 
-const port = Number(process.env.PORT) || 3333;
+const port = Number(process.env.PORT) || 3350;
 
 if (process.env.NODE_ENV !== "production") {
   serve({ fetch: app.fetch, port }, (info) => {

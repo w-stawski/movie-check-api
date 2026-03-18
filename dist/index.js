@@ -4,7 +4,7 @@ import "dotenv/config";
 import { Hono } from "hono";
 import { bearerAuth } from "hono/bearer-auth";
 import { cors } from "hono/cors";
-import { BLOB_URL, getExtendedMovieData, getYorckMovies, } from "./utils/get-movies.js";
+import { BLOB_URL, getExtendedMovieData, getYorckMovies, } from "./get-movies.js";
 const app = new Hono();
 const allowedKeys = (process.env.ALLOWED_KEYS || "").split(",");
 app.use("*", cors());
@@ -32,7 +32,7 @@ app.get("/update-movies", async (c) => {
 app.get("/movies", (c) => {
     return c.redirect(BLOB_URL, 302);
 });
-const port = Number(process.env.PORT) || 3333;
+const port = Number(process.env.PORT) || 3350;
 if (process.env.NODE_ENV !== "production") {
     serve({ fetch: app.fetch, port }, (info) => {
         console.log(`
