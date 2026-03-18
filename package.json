@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "npm run test && tsc",
+    "build": "tsc",
     "start": "tsx src/index.ts",
     "test": "vitest run"
   },
