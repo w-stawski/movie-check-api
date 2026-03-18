@@ -60,10 +60,11 @@ function formatImageUrl(url?: string): string | null {
 
 const parseYorckFilmData = (film: YorckRawFilmData): ProcessedMovie => {
   const { fields } = film;
-  const { title, heroImage, slug, sessions, releaseDate } = fields;
+  const { title, heroImage, slug, sessions, releaseDate, tagline } = fields;
   const year = releaseDate?.split("-")[0] || null;
   return {
-    title: title,
+    title,
+    tagline,
     image: formatImageUrl(heroImage?.fields?.image?.fields?.file?.url),
     year,
     link: slug ? `${YORCK_BASE_URL}/en/films/${slug}` : null,
@@ -89,10 +90,8 @@ export const getExtendedMoviesData = async (
           "+",
         );
         const omdbUrl = `https://www.omdbapi.com/?t=${searchTitle}&y=${movie.year}&apikey=${process.env.OMDB_API_KEY}`;
-
         const response = await fetch(omdbUrl);
         const data = await response.json();
-
         return { ...movie, ...data };
       } catch (e) {
         console.error(`Failed to fetch OMDb for ${movie.title}`, e);

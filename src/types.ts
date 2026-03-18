@@ -44,6 +44,7 @@ export interface ProcessedMovie {
   link: string | null;
   image: string | null;
   year: string | null;
+  tagline: string | null;
   sessions: {
     id: string;
     startTime: string;
